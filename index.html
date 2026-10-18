@@ -7,7 +7,7 @@
 <title>Kahkeshan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&family=Noto+Nastaliq+Urdu:wght@400;600&family=Vazirmatn:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Vazirmatn:wght@400;500&display=swap">
 <style>
 /* Layout: a framed night-sky stage (viewfinder corner ticks), a Persian verse over the moon,
    a two-column sign-up row beneath, then a design-review strip for choosing the verse.
@@ -23,16 +23,16 @@
   --line: rgba(235, 233, 246, 0.14);
   --field: rgba(235, 233, 246, 0.06);
 
-  --f-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
-  --f-naskh: "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
-  --f-nastaliq: "Noto Nastaliq Urdu", "Vazirmatn", Tahoma, serif;
+  /* one typeface for now: IBM Plex Mono, with Vazirmatn for Persian letters */
+  --f-mono: "IBM Plex Mono", "Vazirmatn", ui-monospace, Menlo, Consolas, monospace;
+  --f-body: var(--f-mono);
 
   --s-label: 11px;
   --s-small: 13px;
-  --s-body: 16px;
-  --s-lead: 18px;
-  --s-h1: clamp(32px, 5.2vw, 60px);
+  --s-body: 14px;
+  --s-lead: 14px;
+  --s-h1: 14px; /* same size as the wordmark */
+  --s-verse: clamp(10px, 1.25vw, 14px); /* poem + translation scale with the page so each stays on one line */
 
   color-scheme: dark;
 }
@@ -107,9 +107,9 @@ body::after {
   letter-spacing: 0.3em;
 }
 .wordmark .fa {
-  font-family: var(--f-naskh);
+  font-family: var(--f-mono);
   font-weight: 400;
-  font-size: 17px;
+  font-size: 14px;
   letter-spacing: 0;
   color: var(--moon-hi);
 }
@@ -169,24 +169,22 @@ body::after {
 }
 .bayt {
   display: grid;
-  gap: 2px 48px;
-  font-family: var(--f-nastaliq);
-  font-size: clamp(20px, 2.9vw, 34px);
-  line-height: 2.3;
-  color: var(--moon-hi);
-  text-shadow: 0 0 24px rgba(122, 92, 255, 0.55);
-}
-.stage[data-script="naskh"] .bayt { font-family: var(--f-naskh); font-weight: 300; line-height: 1.9; }
-@media (min-width: 820px) {
-  .stage:not([data-place="over"]) .bayt { grid-template-columns: auto auto; }
-}
-.stage[data-place="over"] .bayt { font-size: clamp(15px, 2.1vw, 26px); }
-.verse .en {
-  max-width: 52ch;
+  gap: 2px 4ch;
   font-family: var(--f-mono);
-  font-size: var(--s-small);
+  font-size: var(--s-verse);
+  line-height: 1.6;
+  color: var(--fg);
+}
+.verse .en {
+  font-family: var(--f-mono);
+  font-size: var(--s-verse);
   line-height: 1.6;
   color: var(--muted);
+}
+@media (min-width: 820px) {
+  .stage:not([data-place="over"]) .bayt { grid-template-columns: auto auto; }
+  .stage:not([data-place="over"]) .bayt span,
+  .stage:not([data-place="over"]) .verse .en { white-space: nowrap; }
 }
 .stage[data-place="over"] .verse .en { display: none; }
 
@@ -210,11 +208,11 @@ body::after {
 }
 @media (min-width: 820px) { .join { grid-template-columns: 1.15fr 1fr; gap: 56px; } }
 .join h1 {
-  margin: 10px 0 14px;
-  font-weight: 300;
+  margin: 10px 0 8px;
+  font-weight: 500;
   font-size: var(--s-h1);
-  line-height: 1.04;
-  letter-spacing: -0.025em;
+  line-height: 1.55;
+  letter-spacing: 0;
   text-wrap: balance;
 }
 .join p { margin: 0; max-width: 46ch; font-size: var(--s-lead); color: var(--muted); }
@@ -291,7 +289,7 @@ legend { padding: 0; margin-bottom: 8px; }
     </div>
   </header>
 
-  <section class="stage" id="stage" data-place="above" data-script="nastaliq" aria-label="Today's sky">
+  <section class="stage" id="stage" data-place="above" aria-label="Today's sky">
     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
 
     <figure class="verse" id="verse" style="margin:0">
@@ -332,7 +330,7 @@ legend { padding: 0; margin-bottom: 8px; }
   <section class="review" aria-labelledby="review-title">
     <div>
       <h2 id="review-title">Design review · verse on the moon</h2>
-      <p class="hint">Pick where the verse sits and the script. This strip is for deciding and goes away before launch.</p>
+      <p class="hint">Pick where the verse sits. This strip is for deciding and goes away before launch.</p>
     </div>
     <div class="toggles">
       <fieldset>
@@ -341,13 +339,6 @@ legend { padding: 0; margin-bottom: 8px; }
           <label><input type="radio" name="place" id="place-above" value="above" checked><span>Above the moon</span></label>
           <label><input type="radio" name="place" id="place-over" value="over"><span>On the moon</span></label>
           <label><input type="radio" name="place" id="place-below" value="below"><span>Below the moon</span></label>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend class="label">Script</legend>
-        <div class="seg">
-          <label><input type="radio" name="script" id="script-nastaliq" value="nastaliq" checked><span>Nastaliq</span></label>
-          <label><input type="radio" name="script" id="script-naskh" value="naskh"><span>Naskh</span></label>
         </div>
       </fieldset>
     </div>
@@ -359,9 +350,6 @@ legend { padding: 0; margin-bottom: 8px; }
   var stage = document.getElementById("stage");
   document.querySelectorAll('input[name="place"]').forEach(function (r) {
     r.addEventListener("change", function () { stage.dataset.place = r.value; });
-  });
-  document.querySelectorAll('input[name="script"]').forEach(function (r) {
-    r.addEventListener("change", function () { stage.dataset.script = r.value; });
   });
 
   /* ---------- clocks, date, moon phase ---------- */
