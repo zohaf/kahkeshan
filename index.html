@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Vazirmatn:wght@400;500&display=swap">
 <style>
-/* Layout: a framed night-sky stage (viewfinder corner ticks), a Persian verse over the moon,
-   a two-column sign-up row beneath, then a design-review strip for choosing the verse.
+/* Layout: a framed night-sky stage (viewfinder corner ticks), then the sign-up:
+   the Persian verse large as its headline, a two-column row beneath.
    Single deliberate dark look, like the reference: grainy ink, violet moon, cyan stars. */
 :root {
   --ink: #08080f;
@@ -32,7 +32,8 @@
   --s-body: 14px;
   --s-lead: 14px;
   --s-h1: 14px; /* same size as the wordmark */
-  --s-verse: clamp(10px, 1.25vw, 14px); /* poem + translation scale with the page so each stays on one line */
+  --s-verse: clamp(10px, 1.25vw, 14px); /* translation scales with the page so it stays on one line */
+  --s-poem: clamp(18px, 2.05vw, 26px); /* the poem is the headline */
 
   color-scheme: dark;
 }
@@ -134,7 +135,7 @@ body::after {
 .tick.bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
 .tick.br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
 
-.sky-wrap { position: relative; order: 2; }
+.sky-wrap { position: relative; }
 .sky {
   display: block;
   width: 100%;
@@ -150,29 +151,20 @@ body::after {
 @media (min-width: 720px) { .sky { aspect-ratio: 4 / 3; } }
 
 .verse {
-  order: 1;
+  margin: 0;
   display: grid;
-  gap: 10px;
+  gap: 12px;
   justify-items: center;
   text-align: center;
-  padding-inline: 8px;
-}
-.stage[data-place="below"] .verse { order: 3; }
-.stage[data-place="over"] .verse {
-  position: absolute;
-  z-index: 2;
-  left: 55%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(78%, 520px);
-  padding: 0;
 }
 .bayt {
+  margin: 0;
   display: grid;
-  gap: 2px 4ch;
+  gap: 4px 2em;
   font-family: var(--f-mono);
-  font-size: var(--s-verse);
-  line-height: 1.6;
+  font-size: var(--s-poem);
+  font-weight: 400;
+  line-height: 1.7;
   color: var(--fg);
 }
 .verse .en {
@@ -182,14 +174,14 @@ body::after {
   color: var(--muted);
 }
 @media (min-width: 820px) {
-  .stage:not([data-place="over"]) .bayt { grid-template-columns: auto auto; }
-  .stage:not([data-place="over"]) .bayt span,
-  .stage:not([data-place="over"]) .verse .en { white-space: nowrap; }
+  .verse .en { white-space: nowrap; }
 }
-.stage[data-place="over"] .verse .en { display: none; }
+@media (min-width: 1000px) {
+  .bayt { grid-template-columns: auto auto; }
+  .bayt span { white-space: nowrap; }
+}
 
 .readout {
-  order: 4;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -203,10 +195,14 @@ body::after {
 /* sign-up */
 .join {
   display: grid;
+  gap: 40px;
+}
+.join-grid {
+  display: grid;
   gap: 28px;
   align-items: end;
 }
-@media (min-width: 820px) { .join { grid-template-columns: 1.15fr 1fr; gap: 56px; } }
+@media (min-width: 820px) { .join-grid { grid-template-columns: 1.15fr 1fr; gap: 56px; } }
 .join h1 {
   margin: 10px 0 8px;
   font-weight: 500;
@@ -255,25 +251,6 @@ button.cta:focus-visible { outline: 2px solid var(--moon); outline-offset: 3px; 
 .status.ok { color: var(--star); }
 .status.err { color: #ff9aa7; }
 
-/* design review */
-.review {
-  border-top: 1px dashed var(--line);
-  padding-top: 24px;
-  display: grid;
-  gap: 18px;
-}
-.review h2 { margin: 0; font: 500 var(--s-label) / 1.4 var(--f-mono); letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg); }
-.review .hint { margin: 4px 0 0; font-size: var(--s-small); color: var(--muted); }
-.toggles { display: flex; flex-wrap: wrap; gap: 16px 32px; }
-fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
-legend { padding: 0; margin-bottom: 8px; }
-.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 2px; }
-.seg label { position: relative; cursor: pointer; }
-.seg input { position: absolute; opacity: 0; pointer-events: none; }
-.seg span { display: block; padding: 8px 14px; font: 400 12px/1.2 var(--f-mono); letter-spacing: 0.08em; color: var(--muted); }
-.seg input:checked + span { background: var(--fg); color: var(--ink); }
-.seg input:focus-visible + span { outline: 2px solid var(--star); outline-offset: -2px; }
-
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
@@ -289,16 +266,8 @@ legend { padding: 0; margin-bottom: 8px; }
     </div>
   </header>
 
-  <section class="stage" id="stage" data-place="above" aria-label="Today's sky">
+  <section class="stage" id="stage" aria-label="Today's sky">
     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
-
-    <figure class="verse" id="verse" style="margin:0">
-      <blockquote class="bayt" lang="fa" dir="rtl" style="margin:0">
-        <span id="m1">بیرون ز تو نیست هر چه در عالم هست</span>
-        <span id="m2">در خود بطلب هر آن&zwnj;چه خواهی که تویی</span>
-      </blockquote>
-      <figcaption class="en" id="en">Nothing in the world is outside you. Look in yourself for whatever you want, for that is you. <span class="label" id="poet">· Attributed to Rumi</span></figcaption>
-    </figure>
 
     <div class="sky-wrap">
       <img class="sky" src="moon.webp" width="1080" height="1440" alt="A violet crescent moon with three echoing rings of light and a few blue stars">
@@ -312,6 +281,14 @@ legend { padding: 0; margin-bottom: 8px; }
   </section>
 
   <section class="join" aria-labelledby="join-title">
+    <figure class="verse" id="verse">
+      <blockquote class="bayt" lang="fa" dir="rtl">
+        <span id="m1">بیرون ز تو نیست هر چه در عالم هست</span>
+        <span id="m2">در خود بطلب هر آن&zwnj;چه خواهی که تویی</span>
+      </blockquote>
+      <figcaption class="en" id="en">Nothing in the world is outside you. Look in yourself for whatever you want, for that is you. <span class="label" id="poet">· Attributed to Rumi</span></figcaption>
+    </figure>
+    <div class="join-grid">
     <div>
       <div class="label">Early access</div>
       <h1 id="join-title">Your sky, read every morning.</h1>
@@ -325,33 +302,13 @@ legend { padding: 0; margin-bottom: 8px; }
       </div>
       <div class="status" id="status" role="status" aria-live="polite">Preview only. Nothing is sent yet.</div>
     </form>
+    </div>
   </section>
 
-  <section class="review" aria-labelledby="review-title">
-    <div>
-      <h2 id="review-title">Design review · verse on the moon</h2>
-      <p class="hint">Pick where the verse sits. This strip is for deciding and goes away before launch.</p>
-    </div>
-    <div class="toggles">
-      <fieldset>
-        <legend class="label">Placement</legend>
-        <div class="seg">
-          <label><input type="radio" name="place" id="place-above" value="above" checked><span>Above the moon</span></label>
-          <label><input type="radio" name="place" id="place-over" value="over"><span>On the moon</span></label>
-          <label><input type="radio" name="place" id="place-below" value="below"><span>Below the moon</span></label>
-        </div>
-      </fieldset>
-    </div>
-  </section>
 </div>
 
 <script>
 (function () {
-  var stage = document.getElementById("stage");
-  document.querySelectorAll('input[name="place"]').forEach(function (r) {
-    r.addEventListener("change", function () { stage.dataset.place = r.value; });
-  });
-
   /* ---------- clocks, date, moon phase ---------- */
   function hhmm(tz) {
     try { return new Intl.DateTimeFormat("en-GB", { timeZone: tz, hour: "2-digit", minute: "2-digit" }).format(new Date()); }
