@@ -7,7 +7,7 @@
 <title>Kahkeshan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Vazirmatn:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Nastaliq+Urdu:wght@400&family=Vazirmatn:wght@400;500&display=swap">
 <style>
 /* Layout: a framed night-sky stage (viewfinder corner ticks) with the Persian verse large
    above the moon, then a two-column sign-up row beneath.
@@ -26,6 +26,7 @@
   /* one typeface for now: IBM Plex Mono, with Vazirmatn for Persian letters */
   --f-mono: "IBM Plex Mono", "Vazirmatn", ui-monospace, Menlo, Consolas, monospace;
   --f-body: var(--f-mono);
+  --f-poem: "Noto Nastaliq Urdu", "Vazirmatn", Tahoma, serif; /* the verse only */
 
   --s-label: 11px;
   --s-small: 13px;
@@ -161,10 +162,10 @@ body::after {
   margin: 0;
   display: grid;
   gap: 4px 2em;
-  font-family: var(--f-mono);
+  font-family: var(--f-poem);
   font-size: var(--s-poem);
   font-weight: 400;
-  line-height: 1.7;
+  line-height: 2.2;
   color: var(--fg);
 }
 .verse .en {
