@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Vazirmatn:wght@400;500&display=swap">
 <style>
-/* Layout: a framed night-sky stage (viewfinder corner ticks), then the sign-up:
-   the Persian verse large as its headline, a two-column row beneath.
+/* Layout: a framed night-sky stage (viewfinder corner ticks) with the Persian verse large
+   above the moon, then a two-column sign-up row beneath.
    Single deliberate dark look, like the reference: grainy ink, violet moon, cyan stars. */
 :root {
   --ink: #08080f;
@@ -269,6 +269,14 @@ button.cta:focus-visible { outline: 2px solid var(--moon); outline-offset: 3px; 
   <section class="stage" id="stage" aria-label="Today's sky">
     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
 
+    <figure class="verse" id="verse">
+      <blockquote class="bayt" lang="fa" dir="rtl">
+        <span id="m1">بیرون ز تو نیست هر چه در عالم هست</span>
+        <span id="m2">در خود بطلب هر آن&zwnj;چه خواهی که تویی</span>
+      </blockquote>
+      <figcaption class="en" id="en">Nothing in the world is outside you. Look in yourself for whatever you want, for that is you. <span class="label" id="poet">· Attributed to Rumi</span></figcaption>
+    </figure>
+
     <div class="sky-wrap">
       <img class="sky" src="moon.webp" width="1080" height="1440" alt="A violet crescent moon with three echoing rings of light and a few blue stars">
     </div>
@@ -281,13 +289,6 @@ button.cta:focus-visible { outline: 2px solid var(--moon); outline-offset: 3px; 
   </section>
 
   <section class="join" aria-labelledby="join-title">
-    <figure class="verse" id="verse">
-      <blockquote class="bayt" lang="fa" dir="rtl">
-        <span id="m1">بیرون ز تو نیست هر چه در عالم هست</span>
-        <span id="m2">در خود بطلب هر آن&zwnj;چه خواهی که تویی</span>
-      </blockquote>
-      <figcaption class="en" id="en">Nothing in the world is outside you. Look in yourself for whatever you want, for that is you. <span class="label" id="poet">· Attributed to Rumi</span></figcaption>
-    </figure>
     <div class="join-grid">
     <div>
       <div class="label">Early access</div>
